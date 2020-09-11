@@ -7,12 +7,15 @@ type Node struct {
 	Next *Node
 }
 
+// Circular Double Linked List
 type CDLL struct {
 	Cap int
 	Len int
 	Head *Node
 }
 
+// Sirve para enviar un nodo no Head adelante
+// es decir, volverlo Head O(1)
 func (l *CDLL) placeFront(cur *Node) {
 	cur.Next = l.Head
 	cur.Prev = l.Head.Prev
@@ -21,6 +24,7 @@ func (l *CDLL) placeFront(cur *Node) {
 	l.Head = cur
 }
 
+// Sirve para agregar un nuevo nodo a la CDLL como Head O(1)
 func (l *CDLL) AddAtHead(k interface{}, v interface{}) *Node {
 	l.Len++
 	cur := &Node{k, v, nil, nil}
@@ -34,6 +38,8 @@ func (l *CDLL) AddAtHead(k interface{}, v interface{}) *Node {
 	return cur
 }
 
+// Remueve un nodo de la CDLL O(1) manteniéndola conectada
+// y luego posiciona el nodo removido como Head O(1)
 func (l *CDLL) UpdateHead(cur *Node) {
 	cur.Prev.Next = cur.Next
 	cur.Next.Prev = cur.Prev

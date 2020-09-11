@@ -17,12 +17,19 @@ func NewLRU(sz int) *LRU {
 func (lru *LRU) insertKeyValuePair(k interface{}, v interface{}) {
 	var cur *Node
 	if _, ok := lru.table[k]; ok {
+		// si el key está en la hash table, se extrae el value del nodo
+		// y se actualiza la posición en la cache
 		cur = lru.table[k]
 		cur.Value = v
 		lru.list.UpdateHead(cur)
 	} else {
+		// si no está en la tabla, se agrega un nodo a la CDLL O(1) y a la hash table O(1)
 		cur = lru.list.AddAtHead(k, v)
 		lru.table[k] = cur
+		// Si la longitud de la CDLL excede la capacidad, 
+		// se disminuye en 1 la longitud
+		// eliminando el nodo final de la CDLL (el prev al head) O(1) y de la hash table O(1)
+		// de esta forma se asegura que sea O(1) en espacio
 		if lru.list.Len > lru.list.Cap {
 			lru.list.Len--
 			lru.list.Head.Prev.Prev.Next = lru.list.Head
@@ -33,6 +40,7 @@ func (lru *LRU) insertKeyValuePair(k interface{}, v interface{}) {
 }
 
 func (lru *LRU) getMostRecentKey() interface{} {
+	// Si la CDLL tiene longitud > 0, se obtiene el Key del Head en O(1)
 	if lru.list.Len > 0 {
 		return lru.list.Head.Key
 	}
@@ -40,6 +48,7 @@ func (lru *LRU) getMostRecentKey() interface{} {
 }
 
 func (lru *LRU) getValueFromKey(k interface{}) interface{} {
+	// Si la key existe en la hash table, se retorna el value del nodo en O(1)
 	if cur, ok := lru.table[k]; ok {
 		lru.list.UpdateHead(cur)
 		return cur.Value
