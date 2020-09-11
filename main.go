@@ -12,6 +12,6 @@ func main() {
 	fmt.Println(lru.getMostRecentKey())
 	lru.insertKeyValuePair("d", 4)
 	fmt.Println(lru.getValueFromKey("b"))
-	lru.insertKeyValuePair("a", 5)
+	lru.insertKeyValuePair("a", 5.1)
 	fmt.Println(lru.getValueFromKey("a"))
 }
