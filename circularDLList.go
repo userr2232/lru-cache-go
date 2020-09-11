@@ -1,8 +1,8 @@
 package main
 
 type Node struct {
-	Key string
-	Value int
+	Key interface{}
+	Value interface{}
 	Prev *Node
 	Next *Node
 }
@@ -21,7 +21,7 @@ func (l *CDLL) placeFront(cur *Node) {
 	l.Head = cur
 }
 
-func (l *CDLL) AddAtHead(k string, v int) *Node {
+func (l *CDLL) AddAtHead(k interface{}, v interface{}) *Node {
 	l.Len++
 	cur := &Node{k, v, nil, nil}
 	if l.Head == nil {

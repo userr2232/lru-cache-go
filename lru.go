@@ -3,18 +3,18 @@ package main
 type LRU struct {
 	size int
 	list *CDLL
-	table map[string] *Node
+	table map[interface{}] *Node
 }
 
 func NewLRU(sz int) *LRU {
 	return &LRU{
 		sz,
 		&CDLL{sz, 0, nil},
-		make(map[string] *Node),
+		make(map[interface{}] *Node),
 	}
 }
 
-func (lru *LRU) insertKeyValuePair(k string, v int) {
+func (lru *LRU) insertKeyValuePair(k interface{}, v interface{}) {
 	var cur *Node
 	if _, ok := lru.table[k]; ok {
 		cur = lru.table[k]
@@ -39,7 +39,7 @@ func (lru *LRU) getMostRecentKey() interface{} {
 	return nil
 }
 
-func (lru *LRU) getValueFromKey(k string) interface{} {
+func (lru *LRU) getValueFromKey(k interface{}) interface{} {
 	if cur, ok := lru.table[k]; ok {
 		lru.list.UpdateHead(cur)
 		return cur.Value
